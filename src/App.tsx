@@ -10,8 +10,8 @@ import YesGif5 from "./assets/yes5.gif";
 import YesGif6 from "./assets/yes6.gif";
 import EndingGif from "./assets/ending1.gif";
 
-const starting_bgms = ["cV4P6j8OWfI", "a49JDdlCfSA"];
-const ending_bgms = ["iJWXVUrMXlU", "wZRJOw2g"];
+// const starting_bgms = ["cV4P6j8OWfI", "a49JDdlCfSA"];
+// const ending_bgms = ["iJWXVUrMXlU", "wZRJOw2g"];
 
 function App() {
   const [hasStarted, setHasStarted] = useState(false);
@@ -20,7 +20,8 @@ function App() {
   const [showNoButton, setShowNoButton] = useState(true);
   const [showValentineMessage, setShowValentineMessage] = useState(false);
   const [showButtons, setShowButtons] = useState(true);
-  const [noClickCount, setNoClickCount] = useState(0);
+  // We only need the setter here; the current count value is not displayed.
+  const [, setNoClickCount] = useState(0);
 
   // Track which event should fire next for each button
   const [yesEventIndex, setYesEventIndex] = useState(0);
