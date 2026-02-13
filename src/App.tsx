@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import "./App.css";
 import Button from "./components/Button";
 import DogGif from "./assets/dog1.gif";
@@ -9,6 +9,7 @@ import YesGif4 from "./assets/yes4.gif";
 import YesGif5 from "./assets/yes5.gif";
 import YesGif6 from "./assets/yes6.gif";
 import EndingGif from "./assets/ending1.gif";
+import bgmFile from "./sounds/bgm.mp3";
 
 // const starting_bgms = ["cV4P6j8OWfI", "a49JDdlCfSA"];
 // const ending_bgms = ["iJWXVUrMXlU", "wZRJOw2g"];
@@ -22,6 +23,7 @@ function App() {
   const [showButtons, setShowButtons] = useState(true);
   // We only need the setter here; the current count value is not displayed.
   const [, setNoClickCount] = useState(0);
+  const bgmAudioRef = useRef<HTMLAudioElement | null>(null);
 
   // Track which event should fire next for each button
   const [yesEventIndex, setYesEventIndex] = useState(0);
@@ -124,10 +126,27 @@ function App() {
     }
   };
 
+  const handleStart = () => {
+    setHasStarted(true);
+
+    // Start background music on user gesture so iOS Safari allows it
+    if (!bgmAudioRef.current) {
+      const audio = new Audio(bgmFile);
+      audio.loop = true;
+      bgmAudioRef.current = audio;
+    }
+
+    bgmAudioRef.current
+      ?.play()
+      .catch((err) => {
+        console.warn("Failed to start BGM", err);
+      });
+  };
+
   if (!hasStarted) {
     return (
       <div className="flex flex-col w-screen h-screen items-center justify-center bg-[#FFF9C4]">
-        <Button label="Start" clickBehavior={() => setHasStarted(true)} />
+        <Button label="Start" clickBehavior={handleStart} />
       </div>
     );
   }
@@ -150,14 +169,6 @@ function App() {
           )}
         </div>
       )}
-      {/* Background music starts after user taps "Start" screen */}
-      <iframe
-        width="0"
-        height="0"
-        src="https://www.youtube.com/embed/cV4P6j8OWfI?autoplay=1&loop=1&playlist=cV4P6j8OWfI&controls=0"
-        allow="autoplay; encrypted-media"
-        title="background-music"
-      ></iframe>
     </div>
   );
 }
